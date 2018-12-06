@@ -1,4 +1,2 @@
 <?php
 
-curl_setopt
-
