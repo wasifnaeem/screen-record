@@ -1,6 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import * as RecordRTC from 'recordrtc';
-import { CanvasRecorder } from '../../models/canvas-recorder.model';
 
 @Component({
   selector: 'app-screen-record',
@@ -9,35 +7,30 @@ import { CanvasRecorder } from '../../models/canvas-recorder.model';
 })
 export class ScreenRecordComponent implements OnInit {
 
-  @ViewChild('canvas') canvasRef: ElementRef
-  @ViewChild('video') videoRef: ElementRef
-  constructor() {
+  @ViewChild('video') videoElement: ElementRef;
 
-  }
+  localStream;
 
-  canvas: HTMLCanvasElement
-  video: HTMLVideoElement
-  recorder: CanvasRecorder
   ngOnInit() {
-    this.video = this.videoRef.nativeElement
+    const videoElement: HTMLVideoElement = this.videoElement.nativeElement;
+    new RTCPeerConnection({
 
-    this.canvas = this.canvasRef.nativeElement
-    this.canvas.width = 640
-    this.canvas.height = 460
+    })
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        frameRate: 20
+      }
+    }).then((stream) => {
+      this.localStream = stream;
+      videoElement.srcObject = stream // = window.URL.createObjectURL(stream);
+      // videoElement.play()
+    })
   }
 
-  startRecording() {
-    let CanvasRecorder = RecordRTC.CanvasRecorder
-    this.recorder = new CanvasRecorder(this.canvas, { disableLogs: true });
-    this.recorder.record()
-  }
-
-  stopRecording() {
-    this.recorder.stop((blob: Blob) => {
-      console.log(blob)
-      console.log(URL.createObjectURL(blob))
-      this.video.src = URL.createObjectURL(blob)
+  stopStream() {
+    const tracks = this.localStream.getTracks();
+    tracks.forEach((track) => {
+      track.stop();
     });
   }
-
 }
