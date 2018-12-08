@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import * as RecordRTC from 'recordrtc';
 
 @Component({
   selector: 'app-root',

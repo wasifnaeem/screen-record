@@ -4,17 +4,11 @@ import { MatButtonModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScreenRecordComponent } from './components/screen-record/screen-record.component';
-import { VideoRecordComponent } from './components/video-record/video-record.component';
-import { RealScreenRecorderComponent } from './components/real-screen-recorder/real-screen-recorder.component';
-import { RecordWebrtcComponent } from './components/record-webrtc/record-webrtc.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ScreenRecordComponent,
-    VideoRecordComponent,
-    RealScreenRecorderComponent,
-    RecordWebrtcComponent,
   ],
   imports: [
     BrowserModule,

@@ -7,30 +7,49 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 })
 export class ScreenRecordComponent implements OnInit {
 
-  @ViewChild('video') videoElement: ElementRef;
+  @ViewChild('video') videoElementRef: ElementRef;
+  @ViewChild('recordedVideo') recordVideoElementRef: ElementRef;
 
-  localStream;
+  recordMedia: MediaStream;
+  videoElement: HTMLVideoElement
+  recordVideoElement: HTMLVideoElement
+  chunks: MediaStream
 
-  ngOnInit() {
-    const videoElement: HTMLVideoElement = this.videoElement.nativeElement;
-    new RTCPeerConnection({
+  async ngOnInit() {
+    this.videoElement = this.videoElementRef.nativeElement
+    this.recordVideoElement = this.recordVideoElementRef.nativeElement
 
-    })
-    navigator.mediaDevices.getUserMedia({
+    let stream: MediaStream = await this.getMediaStream()
+    this.videoElement.srcObject = stream
+  }
+
+  async startRecording() {
+    let stream: MediaStream = await this.getMediaStream()
+
+    this.videoElement.srcObject = stream
+    this.chunks = stream
+  }
+
+  private getMediaStream(): Promise<MediaStream> {
+    return navigator.mediaDevices.getUserMedia({
       video: {
-        frameRate: 20
+        width: 360
       }
-    }).then((stream) => {
-      this.localStream = stream;
-      videoElement.srcObject = stream // = window.URL.createObjectURL(stream);
-      // videoElement.play()
     })
   }
 
-  stopStream() {
-    const tracks = this.localStream.getTracks();
-    tracks.forEach((track) => {
-      track.stop();
-    });
+  stopRecording() {
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        width: 360
+      }
+    }).then((stream) => {
+      this.videoElement.srcObject = stream
+    })
+  }
+
+  playRecording() {
+    this.recordVideoElement.srcObject = this.chunks
+    this.recordVideoElement.play()
   }
 }
