@@ -1,9 +1,13 @@
 <div style="text-align:center">
     <h1>Welcome to WebRTC</h1>
-    <video class="video" #video autoplay></video>
-    <video class="video" style="width:360;" autoplay #recordedVideo></video>
+    <video class="video" #video autoplay controls (click)="onVideoClick()"></video>
+    <video class="video" style="width:360;" autoplay controls #recordedVideo></video>
     <br>
-    <button class="btn btn-warning" (click)="startRecording()">Start</button>
+    <button class="btn btn-primary" (click)="startRecording()">Start</button>
     <button class="btn btn-warning" (click)="stopRecording()">Stop</button>
-    <button class="btn btn-warning" (click)="playRecording()">Play</button>
+    <button class="btn btn-success" (click)="playRecording()">Play</button>
+    <button class="btn btn-outline-info" (click)="takeSnapshot()">Snapshot</button>
 </div>
+
+<canvas hidden></canvas>
+<img>
