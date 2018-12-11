@@ -1,13 +1,11 @@
 <div style="text-align:center">
-    <h1>Welcome to WebRTC</h1>
-    <video class="video" #video autoplay controls (click)="onVideoClick()"></video>
-    <video class="video" style="width:360;" autoplay controls #recordedVideo></video>
+    <h1>Recording User Desktop/Screen</h1>
+    <video class="video" #video autoplay controls></video>
+    <span class="m-1"></span>
+    <video class="video" style="width:360 !important;" controls #recordedVideo></video>
     <br>
-    <button class="btn btn-primary" (click)="startRecording()">Start</button>
-    <button class="btn btn-warning" (click)="stopRecording()">Stop</button>
-    <button class="btn btn-success" (click)="playRecording()">Play</button>
-    <button class="btn btn-outline-info" (click)="takeSnapshot()">Snapshot</button>
+    <button class="btn btn-primary btn-lg" *ngIf="!isRecording" (click)="startRecording()">Start Recording</button>
+    <button class="btn btn-warning btn-lg" *ngIf="isRecording" (click)="stopRecording()">Stop Recording</button>
 </div>
 
-<canvas hidden></canvas>
-<img>
+<canvas #canvas></canvas>

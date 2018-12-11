@@ -7,95 +7,116 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 })
 export class ScreenRecordComponent implements OnInit {
 
-  @ViewChild('video') videoElementRef: ElementRef;
-  @ViewChild('recordedVideo') recordVideoElementRef: ElementRef;
+  mediaRecorder: MediaRecorder
+  recordedBlobs: Blob[]
+  isRecording: boolean = false
+  downloadUrl: string
+  stream: MediaStream
 
-  mediaRecorder: any
-  recorder: MediaStream;
-  videoElement: HTMLVideoElement
-  recordVideoElement: HTMLVideoElement
+  constructor() {
+  }
 
   async ngOnInit() {
-    if (this.hasGetUserMedia) {
-      this.videoElement = this.videoElementRef.nativeElement
-      this.recordVideoElement = this.recordVideoElementRef.nativeElement
-
-      navigator.mediaDevices.getUserMedia({ video: { width: 360 } }).then(stream => {
-        try {
-          this.videoElement.srcObject = stream
-        } catch (error) {
-          this.videoElement.src = URL.createObjectURL(stream)
-        }
-      })
-    }
-    else {
-      alert('getUserMedia() is not supported by your browser')
-    }
+    this.startStreaming()
   }
 
-  onVideoClick() {
-    this.videoElement.className = this.filters[this.filterIndex++ % this.filters.length]
-    console.log(this.videoElement.className)
-  }
-
-  takeSnapshot() {
-    let canvas = document.querySelector('canvas')
-    canvas.width = this.videoElement.videoWidth
-    canvas.height = this.videoElement.videoHeight
-    canvas.getContext('2d').drawImage(this.videoElement, 0, 0)
-
-    let img = document.querySelector('img')
-    img.src = canvas.toDataURL('image/png')
-  }
-
-  async startRecording() {
-    navigator.mediaDevices.getUserMedia({ video: { width: 360 } }).then(stream => {
-      this.recorder = stream
-      this.videoElement.srcObject = stream
-    })
-  }
-
-  stopRecording() {
-    this.recordVideoElement.srcObject = this.recorder
-    this.recorder.getTracks().forEach(track => {
-      track.stop()
-    })
-  }
-
-  playRecording() {
-    this.recordVideoElement.srcObject = this.recorder
-    this.recordVideoElement.play()
-  }
-
-  private getMediaStream(): Promise<MediaStream> {
+  startStreaming() {
     let constraints: MediaStreamConstraints = {
       video: {
         width: 360
       }
     }
 
-    return navigator.mediaDevices.getUserMedia(constraints)
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+      this.stream = stream
+
+      // let context: CanvasRenderingContext2D = this.Canvas.getContext('2d')
+      // let capture = this.Canvas.captureStream(30)
+
+      // console.log(capture)
+      this.VideoElement.srcObject = this.stream
+    })
   }
 
-  hasGetUserMedia(): boolean {
-    return !!(navigator.mediaDevices &&
-      navigator.mediaDevices.getUserMedia);
+  startRecording() {
+    this.recordedBlobs = []
+    let options: MediaRecorderOptions = { mimeType: 'video/webm' }
+
+    try {
+      this.mediaRecorder = new MediaRecorder(this.stream, options)
+    } catch (err) {
+      console.log(err)
+    }
+
+    this.mediaRecorder.start() // collect 100ms of data
+    this.isRecording = !this.isRecording
+    this.onDataAvailableEvent()
+    this.onStopRecordingEvent()
   }
 
-  filterIndex = 0;
-  filters = [
-    '',
-    'grayscale',
-    'sepia',
-    'blur',
-    'brightness',
-    'contrast',
-    'hue-rotate',
-    'hue-rotate2',
-    'hue-rotate3',
-    'saturate',
-    'invert',
-    ''
-  ];
+  stopRecording() {
+    this.mediaRecorder.stop()
+    this.isRecording = !this.isRecording
+    console.log('Recorded Blobs: ', this.recordedBlobs)
+  }
+
+  playRecording() {
+    if (!this.recordedBlobs || !this.recordedBlobs.length) {
+      console.log('cannot play.')
+      return
+    }
+    this.RecordVideoElement.play()
+  }
+
+
+
+
+  // Events
+  onDataAvailableEvent() {
+    try {
+      this.mediaRecorder.ondataavailable = (event: BlobEvent) => {
+        if (event.data && event.data.size > 0) {
+          this.recordedBlobs.push(event.data)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  onStopRecordingEvent() {
+    try {
+      this.mediaRecorder.onstop = (event: Event) => {
+        const videoBuffer = new Blob(this.recordedBlobs, { type: 'video/webm' })
+        this.downloadUrl = window.URL.createObjectURL(videoBuffer) // you can download with <a> tag
+        this.RecordVideoElement.src = this.downloadUrl
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+
+
+  //  Properties
+  @ViewChild('recordedVideo') recordVideoElementRef: ElementRef
+  get VideoElement(): HTMLVideoElement {
+    return this.videoElementRef.nativeElement
+  }
+
+  @ViewChild('video') videoElementRef: ElementRef
+  get RecordVideoElement(): HTMLVideoElement {
+    return this.videoElementRef.nativeElement
+  }
+
+  @ViewChild('canvas') canvasElementRef: ElementRef
+  get Canvas(): HTMLCanvasElement {
+    let canvas: HTMLCanvasElement = this.canvasElementRef.nativeElement
+    canvas.width = 400
+    canvas.height = 400
+    return canvas
+  }
 
 }

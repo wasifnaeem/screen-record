@@ -27,6 +27,7 @@
     "core-js": "^2.6.0",
     "hammerjs": "^2.0.8",
     "rxjs": "^6.3.3",
+    "simple-peer": "^9.1.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
