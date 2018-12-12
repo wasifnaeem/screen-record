@@ -11,8 +11,8 @@ export class Peer2peerComponent implements OnInit {
   remoteUser = new RTCPeerConnection()
 
   ngOnInit() {
-    let peer = new SimplePeer()
-    console.log(peer)
+    // let peer = new SimplePeer()
+    // console.log(peer)
 
     this.localUser.onicecandidate = (e) => {
       if (e.candidate)
