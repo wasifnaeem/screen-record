@@ -3,23 +3,25 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ScreenRecordComponent } from './components/screen-record/screen-record.component';
-import { VideoRecordComponent } from './components/video-record/video-record.component';
-import { Peer2peerComponent } from './components/peer2peer/peer2peer.component';
 import { FormsModule } from '@angular/forms';
 import { SimpPeerComponent } from './components/simp-peer/simp-peer.component';
+import { FindDeviceComponent } from './components/find-device/find-device.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ScreenShareComponent } from './components/screen-share/screen-share.component';
+import { ScreenComponent } from './components/screen/screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ScreenRecordComponent,
-    VideoRecordComponent,
-    Peer2peerComponent,
     SimpPeerComponent,
+    FindDeviceComponent,
+    ScreenShareComponent,
+    ScreenComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatButtonModule,
     FormsModule
   ],

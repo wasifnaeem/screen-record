@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Peer2peerComponent } from './peer2peer.component';
+import { ScreenShareComponent } from './screen-share.component';
 
-describe('Peer2peerComponent', () => {
-  let component: Peer2peerComponent;
-  let fixture: ComponentFixture<Peer2peerComponent>;
+describe('ScreenShareComponent', () => {
+  let component: ScreenShareComponent;
+  let fixture: ComponentFixture<ScreenShareComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ Peer2peerComponent ]
+      declarations: [ ScreenShareComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Peer2peerComponent);
+    fixture = TestBed.createComponent(ScreenShareComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

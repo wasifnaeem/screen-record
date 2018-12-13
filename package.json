@@ -25,10 +25,11 @@
     "@types/dom-mediacapture-record": "^1.0.0",
     "@types/simple-peer": "^6.1.5",
     "bootstrap": "^4.1.3",
+    "childprocess": "^2.0.2",
     "core-js": "^2.6.0",
     "hammerjs": "^2.0.8",
     "rxjs": "^6.3.3",
-    "simple-peer": "^9.1.2",
+    "simple-peer": "^9.2.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
