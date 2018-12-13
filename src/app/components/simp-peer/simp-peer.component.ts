@@ -19,11 +19,11 @@ export class SimpPeerComponent implements OnInit {
   async ngOnInit() {
     // This peer is the initiator and transfering the streaming to the other connected peer 
     if (location.hash === '#init') {
-      // let stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      let stream = await navigator.mediaDevices.getUserMedia({ video: true })
       this.peer = new SimplePeer({
         initiator: location.hash === '#init',
         trickle: false,
-        // stream: stream
+        stream: stream
       })
     }
     else {
@@ -32,7 +32,6 @@ export class SimpPeerComponent implements OnInit {
 
     // triggers when signal is sent from remote
     this.peer.on('signal', function (data) {
-      console.log('data----------data')
       console.log(JSON.stringify(data));
     })
 
@@ -58,7 +57,6 @@ export class SimpPeerComponent implements OnInit {
   }
 
   message() {
-    console.log(this.peer)
     this.peer.send('Hello world');
   }
 
