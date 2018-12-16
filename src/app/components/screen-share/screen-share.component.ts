@@ -21,7 +21,7 @@ export class ScreenShareComponent implements OnInit {
     try {
       // This peer is the initiator and transfering the streaming to the other connected peer 
       if (location.hash === '#init') {
-        let stream = await navigator.mediaDevices.getDisplayMedia({ video: true })
+        let stream = await navigator.getDisplayMedia({ video: true })
         this.peer = new SimplePeer({
           initiator: location.hash === '#init',
           trickle: false,
