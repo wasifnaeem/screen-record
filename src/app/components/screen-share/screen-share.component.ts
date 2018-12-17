@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import * as SimplePeer from 'simple-peer'
+import { DeviceService } from 'src/app/services/device.service';
 
 interface RTCconnectionInfo {
   type: string
@@ -17,8 +18,14 @@ export class ScreenShareComponent implements OnInit {
   peer: any;
   stream: MediaStream
 
+  constructor(private deviceService: DeviceService) {
+
+  }
+
   async ngOnInit() {
     try {
+      this.deviceService.ngOnInit()
+
       // This peer is the initiator and transfering the streaming to the other connected peer 
       if (location.hash === '#init') {
         let stream = await navigator.getDisplayMedia({ video: true })
@@ -34,7 +41,7 @@ export class ScreenShareComponent implements OnInit {
 
       // triggers when signal is sent from remote
       this.peer.on('signal', function (data) {
-        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data))
       })
 
       // this.peer.on('data', (data) => {
@@ -43,7 +50,6 @@ export class ScreenShareComponent implements OnInit {
 
       this.peer.on('stream', (stream) => {
         // got remote video stream, now let's show it in a video tag
-        console.log(stream)
         this.videoElement.srcObject = stream
         this.videoElement.play()
       })
@@ -53,7 +59,7 @@ export class ScreenShareComponent implements OnInit {
   }
 
   connect() {
-    this.peer.signal(this.targetpeer);
+    this.peer.signal(this.targetpeer)
 
     let info: RTCconnectionInfo = JSON.parse(this.targetpeer)
     if (info.type === 'answer') {
@@ -62,10 +68,10 @@ export class ScreenShareComponent implements OnInit {
   }
 
   message() {
-    this.peer.send('Hello world');
+    this.peer.send('Hello world')
   }
 
-  @ViewChild('myvideo') videoElementRef: ElementRef;
+  @ViewChild('myvideo') videoElementRef: ElementRef
   get videoElement(): HTMLVideoElement {
     return this.videoElementRef.nativeElement
   }

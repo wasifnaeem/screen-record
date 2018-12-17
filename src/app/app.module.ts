@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { ScreenShareComponent } from './components/screen-share/screen-share.component';
 import { SimpPeerComponent } from './components/simp-peer/simp-peer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
