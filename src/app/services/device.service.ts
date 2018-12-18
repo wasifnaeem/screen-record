@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 export interface IPersonalDeviceInfo {
@@ -22,13 +22,24 @@ export class DeviceService {
     return this.http.get<IPersonalDeviceInfo>('https://ipinfo.io/json')
   }
 
-  ngOnInit(): void {
-
-    var ip = window.location.origin // this will give you the ip:port
+  location(): Location {
+    return window.location // this will give you the ip:port
     //if you just want the ip or hostname you can use window.location.hostname
+  }
 
-    console.log(ip)
-    console.log(window.location)
+  ip() {
+    return this.http.get('https://jsonip.com')
+  }
+
+  ping() {
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    })
+
+    return this.http.get('http://192.168.2.101', {
+      headers: httpHeaders
+    })
   }
 
 }

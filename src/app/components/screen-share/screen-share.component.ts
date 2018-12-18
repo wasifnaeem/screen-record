@@ -24,7 +24,9 @@ export class ScreenShareComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.deviceService.ngOnInit()
+      this.deviceService.ping().subscribe(result => {
+        console.log(result)
+      })
 
       // This peer is the initiator and transfering the streaming to the other connected peer 
       if (location.hash === '#init') {
