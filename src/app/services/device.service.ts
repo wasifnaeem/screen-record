@@ -1,5 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as socketIo  from "socket.io-client";
 
 export interface IPersonalDeviceInfo {
   city: string
@@ -16,7 +17,16 @@ export interface IPersonalDeviceInfo {
 })
 export class DeviceService {
 
-  constructor(private http: HttpClient) { }
+  private socket
+  constructor(private http: HttpClient) {
+    let device: string = `//192.168.10.20:8080` //Pakistan Ipeez Network
+    let me: string = `//192.168.10.7:4200`
+    let AW: string = `http://192.168.10.6`
+    let google: string = `https://www.google.com`
+    let youtube: string = `https://www.youtube.com`
+
+    this.socket = socketIo(device)
+  }
 
   getPersonalDeviceInfo() {
     return this.http.get<IPersonalDeviceInfo>('https://ipinfo.io/json')
@@ -27,19 +37,9 @@ export class DeviceService {
     //if you just want the ip or hostname you can use window.location.hostname
   }
 
-  ip() {
-    return this.http.get('https://jsonip.com')
-  }
-
   ping() {
-    const httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    })
-
-    return this.http.get('http://192.168.2.101', {
-      headers: httpHeaders
-    })
+    console.log(this.socket)
+    this.socket.connect()
   }
 
 }

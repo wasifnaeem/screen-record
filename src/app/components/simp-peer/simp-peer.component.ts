@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as SimplePeer from "simple-peer";
+import { SimplePeerService } from 'src/app/services/simple-peer.service';
 
 interface RTCconnectionInfo {
   type: string
@@ -14,36 +15,35 @@ interface RTCconnectionInfo {
 export class SimpPeerComponent implements OnInit {
 
   targetpeer: any;
-  peer = SimplePeer();
+  peer: SimplePeer.Instance;
   stream: MediaStream
+
+  constructor(private peerService: SimplePeerService) {
+  }
 
   async ngOnInit() {
     try {
-      // This peer is the initiator and transfering the streaming to the other connected peer 
-      if (location.hash === '#init') {
-        let stream = await navigator.mediaDevices.getUserMedia({ video: true })
-
-        this.videoElement.srcObject = stream
-        this.peer = new SimplePeer({
-          initiator: location.hash === '#init',
-          trickle: true,
-          stream: stream
-        })
-      }
-      else {
-        this.peer = new SimplePeer()
-      }
+      let peer
+      if (location.hash === '#init')
+        peer = this.peer = await this.peerService.createPeer(true)
+      else
+        peer = this.peer = await this.peerService.createPeer()
 
       // triggers when signal is sent from remote
-      this.peer.on('signal', function (data) {
+      peer.on('signal', function (data) {
+        console.log(JSON.stringify(data))
+      })
+
+      // triggers when signal is sent from remote
+      peer.on('signal', function (data) {
         console.log(JSON.stringify(data));
       })
 
-      // this.peer.on('data', (data) => {
+      // peer.on('data', (data) => {
       //   console.log('Received Data: ' + data)
       // })
 
-      this.peer.on('stream', (stream) => {
+      peer.on('stream', (stream) => {
         // got remote video stream, now let's show it in a video tag
         this.videoElement.srcObject = stream
       })

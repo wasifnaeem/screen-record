@@ -6,12 +6,16 @@ import { ScreenShareComponent } from './components/screen-share/screen-share.com
 import { SimpPeerComponent } from './components/simp-peer/simp-peer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http";
+import { DeviceComponent } from './components/device/device.component';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ScreenShareComponent,
-    SimpPeerComponent
+    SimpPeerComponent,
+    DeviceComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
