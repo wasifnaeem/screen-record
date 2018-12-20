@@ -1,0 +1,13 @@
+<h1>Web Sockets</h1>
+
+<input type="text" [(ngModel)]="msg" class="form-control">
+
+<br>
+
+<button class="btn btn-success" (click)="sendMessage()">Send Message</button>
+
+<br>
+
+<ul>
+  <li *ngFor="let msg of msgs">{{msg}}</li>
+</ul>
