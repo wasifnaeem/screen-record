@@ -15,17 +15,23 @@ export class Server {
         let count: number = 0
         this.io.on('connect', () => console.log('No. of clients: ', ++count))
         this.io.on('connection', (socket: socketIO.Socket) => {
+            socket.on('disconnect', () => console.log('No. of clients: ', --count))
 
             socket.on('invoking-from-client', (data) => {
-                console.log(data)
-                let msg: string = 'Server: Thank you, Client'
-                socket.emit('calling-from-server', msg)
+                socket.broadcast.emit('CHAT', data)
+                socket.broadcast.emit('calling-from-server', data)
             })
 
-            socket.on('disconnect', () => console.log('No. of clients: ', --count))
+            socket.on('msg', (data) => {
+                socket.broadcast.emit('calling-from-server', data)
+            })
+
+            socket.on('stream', (data) => {
+                console.log(data)
+                socket.broadcast.emit('stream', data)
+            })
         })
     }
-
 }
 
 export default new Server()

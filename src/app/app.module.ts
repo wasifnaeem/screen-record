@@ -9,6 +9,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { DeviceComponent } from './components/device/device.component';
 import { TestComponent } from './components/test/test.component';
 import { WebSocketComponent } from './components/web-socket/web-socket.component';
+import { Global } from './globals';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { WebSocketComponent } from './components/web-socket/web-socket.component
     BrowserAnimationsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    Global
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

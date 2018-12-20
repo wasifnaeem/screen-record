@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
-import * as SimplePeer from 'simple-peer'
-import { DeviceService } from 'src/app/services/device.service';
-import * as _ from "underscore";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import * as SimplePeer from 'simple-peer';
+import { Global } from 'src/app/globals';
 import { SimplePeerService } from 'src/app/services/simple-peer.service';
 
 interface RTCconnectionInfo {
@@ -19,50 +18,28 @@ export class ScreenShareComponent implements OnInit {
   targetpeer: any;
   peer: SimplePeer.Instance;
   stream: MediaStream
-
-  constructor(private peerService: SimplePeerService) {
-    console.log(_.now())
+  socket: SocketIOClient.Socket
+  constructor(private peerService: SimplePeerService, private global: Global) {
+    this.socket = this.global.socket
   }
 
   async ngOnInit() {
     try {
+      let stream
+      if (location.hash === '#init') {
+        stream = await navigator.getDisplayMedia({ video: true })
+        this.socket.emit('stream', stream)
+      }
 
-      let peer
-      if (location.hash === '#init')
-        peer = this.peer = await this.peerService.createPeer(true)
-      else
-        peer = this.peer = await this.peerService.createPeer()
-
-      // triggers when signal is sent from remote
-      peer.on('signal', function (data) {
-        console.log(JSON.stringify(data))
-      })
-
-      // peer.on('data', (data) => {
-      //   console.log('Received Data: ' + data)
-      // })
-
-      peer.on('stream', (stream) => {
-        // got remote video stream, now let's show it in a video tag
+      this.socket.on('stream', (stream: any) => {
+        console.log('stream started')
+        console.log(stream)
         this.videoElement.srcObject = stream
         this.videoElement.play()
       })
     } catch (error) {
       console.log(error)
     }
-  }
-
-  connect() {
-    this.peer.signal(this.targetpeer)
-
-    let info: RTCconnectionInfo = JSON.parse(this.targetpeer)
-    if (info.type === 'answer') {
-      console.log('connected established')
-    }
-  }
-
-  message() {
-    this.peer.send('Hello world')
   }
 
   @ViewChild('myvideo') videoElementRef: ElementRef

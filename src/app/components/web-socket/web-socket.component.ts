@@ -1,7 +1,5 @@
-import { OnInit, Component } from '@angular/core';
-import * as io from "socket.io-client";
-import { environment } from "../../../environments/environment";
-import { WebSocketService } from 'src/app/services/web-socket.service';
+import { Component, OnInit } from '@angular/core';
+import { Global } from 'src/app/globals';
 
 @Component({
   selector: 'app-web-socket',
@@ -13,19 +11,12 @@ export class WebSocketComponent implements OnInit {
   socket: SocketIOClient.Socket
   msg: string
   msgs: string[]
-  constructor() {
+  constructor(private global: Global) {
     this.msgs = new Array<string>()
   }
 
   ngOnInit() {
-    console.log(environment.server)
-    this.socket = io(environment.server)
-
-    this.socket.connect()
-
-    this.socket.on('connection', () => {
-      console.log('Connected with server through Socket')
-    })
+    this.socket = this.global.socket
 
     this.receiveMessage()
   }
@@ -38,7 +29,7 @@ export class WebSocketComponent implements OnInit {
 
   sendMessage() {
     this.socket.emit('invoking-from-client', this.msg)
-    this.msgs.push('Client: ' + this.msg)
+    this.msgs.push(this.msg)
     this.msg = ''
   }
 
