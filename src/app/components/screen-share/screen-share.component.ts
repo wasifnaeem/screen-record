@@ -19,15 +19,18 @@ export class ScreenShareComponent implements OnInit {
   peer: SimplePeer.Instance;
   stream: MediaStream
   socket: SocketIOClient.Socket
-  constructor(private peerService: SimplePeerService, private global: Global) {
+  constructor(private global: Global) {
     this.socket = this.global.socket
   }
 
   async ngOnInit() {
     try {
-      let stream
+      let stream: MediaStream
       if (location.hash === '#init') {
-        stream = await navigator.getDisplayMedia({ video: true })
+        stream = await navigator.getDisplayMedia({
+          video: true
+        })
+        console.log(stream)
         this.socket.emit('stream', stream)
       }
 
