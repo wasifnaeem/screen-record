@@ -1,13 +1,17 @@
 import * as socketIO from "socket.io";
 import app from './app';
+import * as net from 'net'
+import { TCPclient } from './tcp-client';
 
 export class Server {
 
     io: socketIO.Server
     constructor() {
+        let tcpClient = new TCPclient('192.168.0.101', 3700)
+
         const port = 3000 || process.env.PORT
         const server = app.listen(3000, '0.0.0.0', () => {
-            console.log(`Listening on Port: ${port}`)
+            // console.log(`Http Server is listening on Port: ${port}`)
         })
 
         this.io = socketIO(server)

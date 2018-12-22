@@ -28,6 +28,11 @@ export class WebSocketComponent implements OnInit {
   }
 
   sendMessage() {
+    // for TCP server
+    this.socket.emit('data', this.msg)
+    this.socket.emit('test', this.msg)
+
+    // for HTTP server
     this.socket.emit('invoking-from-client', this.msg)
     this.msgs.push(this.msg)
     this.msg = ''
