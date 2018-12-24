@@ -2,6 +2,7 @@ import * as socketIO from "socket.io";
 import app from './app';
 import * as net from 'net'
 import { TCPclient } from './tcp-client';
+import * as g from "./global";
 
 export class Server {
 

@@ -1,5 +1,5 @@
 import * as net from 'net'
-
+import * as g from "./global";
 export class TCPclient {
 
     constructor(host: string, port: number) {

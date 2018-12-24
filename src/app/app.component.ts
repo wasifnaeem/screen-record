@@ -9,8 +9,12 @@ import { Global } from './globals';
 })
 export class AppComponent {
 
-  constructor(private socketConnection: SocketConnection, private global: Global) {
-    this.global.socket = this.socketConnection.socket
+  // constructor(private socketConnection: SocketConnection, private global: Global) {
+  //   this.global.socket = this.socketConnection.socket
+  // }
+
+  constructor() {
+
   }
 
 }

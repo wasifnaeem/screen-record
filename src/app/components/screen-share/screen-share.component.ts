@@ -45,6 +45,14 @@ export class ScreenShareComponent implements OnInit {
     }
   }
 
+  connect() {
+
+  }
+
+  message() {
+    
+  }
+
   @ViewChild('myvideo') videoElementRef: ElementRef
   get videoElement(): HTMLVideoElement {
     return this.videoElementRef.nativeElement

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DeviceService } from 'src/app/services/device.service';
 
 @Component({
   selector: 'app-device',
@@ -8,11 +7,9 @@ import { DeviceService } from 'src/app/services/device.service';
 })
 export class DeviceComponent implements OnInit {
 
-  response: any
-  constructor(private deviceService: DeviceService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.deviceService.ping()
   }
 
 }

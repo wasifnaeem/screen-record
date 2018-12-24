@@ -1,0 +1,22 @@
+<div class="row no-gutters">
+  <div class="col"></div>
+  <div class="col-10 devices-container">
+
+    <!-- devices status -->
+    <div class="d-flex justify-content-between p-2">
+      <h3>Available Devices</h3>
+      <img [src]="RefreshIcon" alt="Refresh Devices">
+    </div>
+
+    <div class="devices-status-bar d-flex justify-content-between align-items-center">
+      <span><input type="checkbox" [(ngModel)]="IsSelectedForAllDevices">
+        <span class="device-text">&nbsp; Device</span>
+      </span>
+      <h4>Status</h4>
+    </div>
+
+    <!-- list of devices -->
+    <app-device></app-device>
+  </div>
+  <div class="col"></div>
+</div>
